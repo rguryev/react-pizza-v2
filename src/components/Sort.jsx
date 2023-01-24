@@ -15,7 +15,6 @@ const Sort = ({ value, onChangeSort }) => {
 		onChangeSort(i);
 		setOpen(false);
 	};
-
 	return (
 		<div className='sort'>
 			<div className='sort__label'>

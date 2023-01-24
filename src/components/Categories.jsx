@@ -5,6 +5,7 @@ const Categories = ({ value, onChangeCategory }) => {
 
 	return (
 		<div className='categories'>
+			<div></div>
 			<ul>
 				{categories.map((categoryName, i) => (
 					<li onClick={() => onChangeCategory(i)} className={value === i ? 'active' : ''} key={i}>
