@@ -17,8 +17,6 @@ const Home = () => {
 	const [currentPage, setCurrentPage] = React.useState(1);
 	const [sortType, setSortType] = React.useState({ name: 'популярности', sortProperty: 'rating' });
 
-	console.log(currentPage);
-
 	React.useEffect(() => {
 		try {
 			setIsLoading(true);
