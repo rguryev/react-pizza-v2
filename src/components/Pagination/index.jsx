@@ -5,7 +5,7 @@ import styles from './Pagination.module.scss';
 
 // TODO: Pagination by library to Obsidian: Pagination
 
-const Pagination = ({ onChangePage }) => {
+const Pagination = ({ currentPage, onChangePage }) => {
 	return (
 		<div>
 			<ReactPaginate
@@ -16,6 +16,7 @@ const Pagination = ({ onChangePage }) => {
 				onPageChange={e => onChangePage(e.selected + 1)}
 				pageRangeDisplayed={4}
 				pageCount={3}
+				forcePage={currentPage - 1}
 				renderOnZeroPageCount={null}
 			/>
 		</div>
