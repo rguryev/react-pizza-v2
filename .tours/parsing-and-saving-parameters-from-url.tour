@@ -1,0 +1,91 @@
+{
+  "$schema": "https://aka.ms/codetour-schema",
+  "title": "Parsing and saving parameters from URL",
+  "steps": [
+    {
+      "file": "src/pages/Home.jsx",
+      "description": "Импорт библиотеки",
+      "line": 2
+    },
+    {
+      "file": "src/pages/Home.jsx",
+      "description": "1st useEffect(): берет параметры из redux, генерирует строку вида `?sortProperty=rating&categoryId=0&currentPage=1`c помощью библиотеки qs.stringify и вшивает в url с помощью navigate (предварительно импортируем из react-router-dom и заносим в переменную). ",
+      "line": 56,
+      "selection": {
+        "start": {
+          "line": 63,
+          "character": 4
+        },
+        "end": {
+          "line": 63,
+          "character": 12
+        }
+      }
+    },
+    {
+      "file": "src/pages/Home.jsx",
+      "description": "2nd useEffect(): параметры вшиты в URL, парсим url-строку в объект, который попадает в redux. \r\nЕсть два способа вытащить параметры: 1) react-router-dom -> useSearchParams и 2) window.location.search (в данном случае предпочтительнее т.к мы при первой загрузки страницы сразу начинаем парсить параметры)",
+      "line": 69
+    },
+    {
+      "file": "src/pages/Home.jsx",
+      "description": "У нас в url сортировка - это строка, а в стейте - объект, поэтому импортируем sortList из components/Sort.js, пробегаемся по каждому элементу списка и находим в объекте sortProperty то, что есть в params.sortProperty и этот объект мы передаем в диспатч экшена",
+      "line": 74
+    },
+    {
+      "file": "src/redux/slices/filterSlice.js",
+      "description": "Создаем экшен, который будет передавать объект из query-параметров в redux",
+      "line": 29,
+      "selection": {
+        "start": {
+          "line": 25,
+          "character": 3
+        },
+        "end": {
+          "line": 28,
+          "character": 57
+        }
+      }
+    },
+    {
+      "file": "src/pages/Home.jsx",
+      "description": "3rd useEffect(): Все окей, категория сохраняется в url и при перезагрузки не теряется, но если перезагрузить приложение - то сначала делается один запрос (данные берет из стейта), потом второй (данные берет из url). \r\nПри первом рендере делаем проверку, нужно ли отправлять запрос: если не пришли URL-параметры - отправляй запрос, если пришли - подожди пока этот диспатч выполнится и даст новые данные (URL -> redux -> home.jsx) и перерисует компоненту.",
+      "line": 84,
+      "selection": {
+        "start": {
+          "line": 70,
+          "character": 7
+        },
+        "end": {
+          "line": 70,
+          "character": 29
+        }
+      }
+    },
+    {
+      "file": "src/pages/Home.jsx",
+      "description": "Выше создаем флаг isSearch. Это флаг для проверки есть ли url-параметры. Тут в window.location.search есть значение, это значит, что из url будут парситься объект и диспатчится в redux. Для того, чтобы из 3-го useEffect не запрашивались данные из redux, мы ставим флаг на true.",
+      "line": 80,
+      "selection": {
+        "start": {
+          "line": 70,
+          "character": 7
+        },
+        "end": {
+          "line": 70,
+          "character": 29
+        }
+      }
+    },
+    {
+      "file": "src/pages/Home.jsx",
+      "description": "Теперь при перезагрузке отправляется только один запрос - эта задача выполнена, но теперь запрос всегда висит в url, даже когда мы переходим на главную - это происходит из-за того, что 1-й useEffect при первом рендере сразу же узнает что в редаксе и вшивает это в ссылку. Надо, чтобы при 1-м рендере ничего в url не вшивалось, чтобы состояние менялось только после того, как человек поменяет категорию.",
+      "line": 63
+    },
+    {
+      "file": "src/pages/Home.jsx",
+      "description": "Создаем флаг, который будет следить за тем, произошел ли первый рендер. Проверяем, если isMounted.current = false (не было первого рендера) - тогда не выполняем вшивание данных из redux в url и следом отмечаем что первый рендер произошел. Если isMounted.current = true (был первый рендер), только тогда вшивай данные в url.",
+      "line": 57
+    }
+  ]
+}
