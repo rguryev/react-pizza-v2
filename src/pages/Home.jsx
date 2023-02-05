@@ -68,12 +68,8 @@ const Home = () => {
 	//* 2nd useEffect: parsing url
 	React.useEffect(() => {
 		if (window.location.search) {
-			console.log(window.location.search);
-
 			const params = qs.parse(window.location.search.substring(1));
 			const sort = sortList.find(obj => obj.sortProperty === params.sortProperty);
-
-			console.log(params);
 
 			dispatch(setFilters({ ...params, sort }));
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { setSortId } from '../redux/slices/filterSlice';
 
 export const sortList = [
@@ -14,15 +14,34 @@ export const sortList = [
 const Sort = () => {
 	const dispatch = useDispatch();
 	const sort = useSelector(state => state.filter.sort);
-
+	// Step:3 useRef-linking
+	const sortRef = React.useRef();
+	// Step:1 flag open/close popup
 	const [open, setOpen] = React.useState(false);
 
 	const onClickListItem = obj => {
 		dispatch(setSortId(obj));
 		setOpen(false);
 	};
+
+	// Event Listener on full window
+	React.useEffect(() => {
+		// Step 6: handler click
+		const handleClickOutside = event => {
+			if (!event.composedPath().includes(sortRef.current)) {
+				setOpen(false);
+			}
+		};
+		// Step 5: event listener when mount
+		document.body.addEventListener('click', handleClickOutside);
+
+		// Step 7: delete handler when unmount
+		return () => document.body.removeEventListener('click', handleClickOutside);
+	}, []);
+
 	return (
-		<div className='sort'>
+		// Step: 4 useRef on component
+		<div ref={sortRef} className='sort'>
 			<div className='sort__label'>
 				<svg
 					width='10'
@@ -38,6 +57,7 @@ const Sort = () => {
 				<b>Сортировка по:</b>
 				<span onClick={() => setOpen(!open)}>{sort.name}</span>
 			</div>
+			{/* Step 2: is flag open */}
 			{open && (
 				<div className='sort__popup'>
 					<ul>

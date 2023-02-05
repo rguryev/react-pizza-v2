@@ -1,0 +1,61 @@
+{
+  "$schema": "https://aka.ms/codetour-schema",
+  "title": "Show and hide popup",
+  "steps": [
+    {
+      "file": "src/components/Sort.jsx",
+      "description": "## flag open/close popup\r\nСоздаем флаг, который говорит, открыт или закрыт попап",
+      "line": 20
+    },
+    {
+      "file": "src/components/Sort.jsx",
+      "description": "## is flag open\r\nВ зависимости от флага мы показываем/не показываем компонент попапа",
+      "line": 62
+    },
+    {
+      "file": "src/components/Sort.jsx",
+      "description": "## useRef-linking\r\nСоздаем ссылку на попап с помощью useRef() и передаем ее диву где будет вызываться попап. useRef нам нужен для того, чтобы слушатель события не слетал при ререндере страницы.",
+      "line": 18
+    },
+    {
+      "file": "src/components/Sort.jsx",
+      "description": "## useRef on component\r\nВешаем ссылку useRef() на компонент с попапом",
+      "line": 45
+    },
+    {
+      "file": "src/components/Sort.jsx",
+      "description": "## event listener when mount\r\nМонтирование: Обработчик клика вешается на весь документ и на событие передаем функцию handleClickOutside - ВАЖНО: вот здесь можно обращаться напрямую к DOM т.к мы из этого компонента не можем с помощью useRef подняться по дереву и обратиться ко всему документу. (см. virtual-DOM)\r\n\r\n```js\r\ndocument.body.addEventListener('click', handleClickOutside);\r\n```",
+      "selection": {
+        "start": {
+          "line": 34,
+          "character": 3
+        },
+        "end": {
+          "line": 34,
+          "character": 63
+        }
+      },
+      "line": 37
+    },
+    {
+      "file": "src/components/Sort.jsx",
+      "description": "## handler click\r\nСоздаем функцию, которая будет вызывать в слушателе, event.composedPath() показывает путь/цепочку погружения клика. Если произвели клик не по попапу, то закрываем попап.",
+      "line": 30,
+      "selection": {
+        "start": {
+          "line": 31,
+          "character": 15
+        },
+        "end": {
+          "line": 31,
+          "character": 27
+        }
+      }
+    },
+    {
+      "file": "src/components/Sort.jsx",
+      "description": "## delete handler when unmount\r\nПроблема: Каждый раз когда рендерится компонента (и запускается useEffect), навешивается addEventListener, когда мы уходим на другую страницу - слушатель addEventListener не удаляется, и когда мы возвращаемся на эту компоненту - то навешивается еще один addEventListener, теперь их два.\r\nРешение: при размонтировании компоненты будем удалять слушатель события. Unmount в хуке useEffect реализуется через вызов функции в return () => {} внутри useEffect. В unmount-e убираем removeEventListener. Теперь при переходе в корзину и обратно не будет дублироваться addEventListener.",
+      "line": 40
+    }
+  ]
+}

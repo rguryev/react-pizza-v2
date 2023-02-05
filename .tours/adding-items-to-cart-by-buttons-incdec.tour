@@ -1,0 +1,26 @@
+{
+  "$schema": "https://aka.ms/codetour-schema",
+  "title": "Adding items to cart by buttons inc/dec",
+  "steps": [
+    {
+      "file": "src/components/CartItem.jsx",
+      "description": "## adding id\r\nПередаем объект только с одним id",
+      "line": 12
+    },
+    {
+      "file": "src/components/CartItem.jsx",
+      "description": "## removing item\r\nА вот тут передаем не объект {id}, а просто id",
+      "line": 16
+    },
+    {
+      "file": "src/redux/slices/cartSlice.js",
+      "description": "test26",
+      "pattern": "^[^\\S\\n]*state\\.totalPrice = state\\.items\\.reduce\\(\\(sum, obj\\) => \\{"
+    },
+    {
+      "file": "src/redux/slices/cartSlice.js",
+      "description": "## why we add only id, not all obj?\r\nКогда мы находимся в корзине, мы уже знаем что пицца добавлена, т.е пицца уже найдена (findItem) и добавлена в массив items в блоке else. Поэтому нам надо вызвать findItem.count++ (увеличение item.count), а не создание нового объекта. Нам осталось только передать id пиццы, которую хотим дополнительно добавить.",
+      "line": 15
+    }
+  ]
+}

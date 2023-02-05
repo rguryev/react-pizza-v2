@@ -1,0 +1,61 @@
+{
+  "$schema": "https://aka.ms/codetour-schema",
+  "title": "Adding items to cart by groups",
+  "steps": [
+    {
+      "file": "src/redux/slices/cartSlice.js",
+      "description": "## adding items\r\nДелаем так, чтобы несколько добавленных пицц одной категории помещались в один объект чтобы вывести счестчик пицц на кнопку \"добавить\".\r\nЕсли 1.(в стейте в items был найден объект у которого id = action.payload.id) и 2.(такой объект уже есть в items) - увеличь счетчик, если нет такого объекта - добавь в массив весь объект + добавь count: 1",
+      "line": 12,
+      "selection": {
+        "start": {
+          "line": 25,
+          "character": 6
+        },
+        "end": {
+          "line": 25,
+          "character": 14
+        }
+      }
+    },
+    {
+      "file": "src/redux/slices/cartSlice.js",
+      "description": "## counter on button with total price\r\nС помощью .reduce() перебираем массив items (наша корзина с товарами) и добавляем к общей сумме стоимость каждой пиццы",
+      "line": 25,
+      "selection": {
+        "start": {
+          "line": 24,
+          "character": 11
+        },
+        "end": {
+          "line": 24,
+          "character": 19
+        }
+      }
+    },
+    {
+      "file": "src/components/CartItem.jsx",
+      "description": "## reducing items\r\nА вот тут передаем не объект {id}, а просто id т.к в слайсе мы ищем в массиве добавленных пицц объект пиццы по id и когда его нашли - уменьшаем количество.",
+      "pattern": "^[^\\S\\n]*dispatch\\(minusItem\\(id\\)\\);"
+    },
+    {
+      "file": "src/redux/slices/cartSlice.js",
+      "description": "## deleting items\r\nПередаем id, создаться новый массив, где не будет категории пицц с определенным id, который мы передали в CartItem.jsx т.е вся категория удалится",
+      "pattern": "^[^\\S\\n]*state\\.items = state\\.items\\.filter\\(obj => obj\\.id !== action\\.payload\\);",
+      "selection": {
+        "start": {
+          "line": 25,
+          "character": 6
+        },
+        "end": {
+          "line": 25,
+          "character": 10
+        }
+      }
+    },
+    {
+      "file": "src/redux/slices/cartSlice.js",
+      "description": "## clear all\r\nЗатираем весь массив",
+      "pattern": "^[^\\S\\n]*state\\.totalPrice = 0;"
+    }
+  ]
+}
