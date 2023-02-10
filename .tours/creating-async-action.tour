@@ -1,0 +1,21 @@
+{
+  "$schema": "https://aka.ms/codetour-schema",
+  "title": "Creating async action",
+  "steps": [
+    {
+      "file": "src/redux/slices/pizzaSlice.js",
+      "description": "## Creating slice\r\nСоздаем слайс где будет экшен, который принимает пиццы и закидывает их в стейт",
+      "pattern": "^[^\\S\\n]*const pizzaSlice = createSlice\\(\\{"
+    },
+    {
+      "file": "src/pages/Home.jsx",
+      "description": "## Importing items from the state\r\nИмпортируем пиццы из стейта",
+      "pattern": "^[^\\S\\n]*const items = useSelector\\(state => state\\.pizza\\.items\\);"
+    },
+    {
+      "file": "src/pages/Home.jsx",
+      "description": "## Sending fetched pizzas to the state by dispatching action\r\nПолучили с сервера пиццы, сохранили res.data с помощью деструктуризации в {data} и задиспатчили с помощью экшена в стейт.",
+      "pattern": "^[^\\S\\n]*dispatch\\(setItems\\(data\\)\\);"
+    }
+  ]
+}
