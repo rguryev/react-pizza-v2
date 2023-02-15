@@ -1,0 +1,41 @@
+{
+  "$schema": "https://aka.ms/codetour-schema",
+  "title": "Selector in redux",
+  "steps": [
+    {
+      "file": "src/components/Header.jsx",
+      "description": "## Searching duplicated code in redux\r\n1. state => state.cart дублируется в нескольких местах кода - значит можно инкапсулировать в отдельный селектор и использовать.\r\n",
+      "pattern": "^[^\\S\\n]*// const \\{ items, totalPrice \\} = useSelector\\(state => state\\.cart\\);",
+      "selection": {
+        "start": {
+          "line": 10,
+          "character": 47
+        },
+        "end": {
+          "line": 10,
+          "character": 66
+        }
+      }
+    },
+    {
+      "file": "src/redux/slices/cartSlice.js",
+      "description": "## What is Selector?\r\n1. Селектор - обычная именнованная js-функция которая вызывается в хуке useSelector для вытаскивания данных\r\n2. Селектор создаем чтобы переиспользовать код, селектор имеет название \"selectName\" или \"nameSelector\" или \"getName\" или \"getNameSelector\". Еще пример нейминга \"selectCartTotalPrice\" это (state) => state.cart.totalPrice",
+      "pattern": "^[^\\S\\n]*export const selectCart = state => state\\.cart;"
+    },
+    {
+      "file": "src/redux/slices/cartSlice.js",
+      "description": "## Selector with dependencies from component (not from redux)\r\n1. Если нам нужны какие данные внутри компоненты, например id компоненты, то создаем сначала функцию, которая принимает id (вызывается в компоненте selectCartItemById(id)) и уже внутри содается анонимная функция, которая использует этот id.\r\n2. Обьяснение из комментов: Сейчас объясню для тек кто не понял как вложенная анонимная функция достатет айдишку. Тут вся суть в замыканиях. Когда мы вызываем selectcartItemByID(id) и передаем ему в параметрах айдишку, то эта функция возвращает внутреннюю анонимную функцию. После вызывается внутренняя функция, та которая принимает в парамерах (state), стейт ей передает useSelector, а айдишку она читает из лексического окружения внешней функции (та которая selectcartItemByID(id). То есть как бы наша анонимная функция обернута selectcartItemByID() и может брать любые данные которые в нее были переданы\r\n3. Альтернативный синтаксис. selector: export const selectCartItemById = (id, state) => state.cart.items.find((obj) => obj.id === id); + component: const cartItem = useSelector(state => selectCartItemById(id, state));",
+      "pattern": "^[^\\S\\n]*export const selectCartItemById = \\(id = state => state\\.cart\\.items\\.find\\(obj => obj\\.id === id\\)\\);",
+      "selection": {
+        "start": {
+          "line": 45,
+          "character": 14
+        },
+        "end": {
+          "line": 45,
+          "character": 32
+        }
+      }
+    }
+  ]
+}

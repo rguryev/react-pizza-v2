@@ -3,16 +3,19 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { useDispatch, useSelector } from 'react-redux';
-import { setCategoryId, setCurrentPage, setFilters } from '../redux/slices/filterSlice';
-
-import { SearchContext } from '../App';
+import {
+	selectFilter,
+	setCategoryId,
+	setCurrentPage,
+	setFilters,
+} from '../redux/slices/filterSlice';
 
 import Categories from '../components/Categories';
 import Pagination from '../components/Pagination';
 import PizzaBlock from '../components/PizzaBlock/index';
 import Skeleton from '../components/PizzaBlock/Skeleton';
 import Sort, { sortList } from '../components/Sort';
-import { fetchPizzas } from '../redux/slices/pizzaSlice';
+import { fetchPizzas, selectPizzaData } from '../redux/slices/pizzaSlice';
 
 const Home = () => {
 	const navigate = useNavigate();
@@ -20,16 +23,14 @@ const Home = () => {
 	const isSearch = React.useRef(false);
 	const isMounted = React.useRef(false);
 
-	const { items, status } = useSelector(state => state.pizza);
-	const { categoryId, sort, currentPage } = useSelector(state => state.filter);
+	const { items, status } = useSelector(selectPizzaData);
+	const { categoryId, sort, currentPage, searchValue } = useSelector(selectFilter);
 
-	const { searchValue } = React.useContext(SearchContext);
-
-	const onChangeCategory = React.useCallback(idx => {
+	const onChangeCategory = React.useCallback((idx) => {
 		dispatch(setCategoryId(idx));
 	});
 
-	const onChangePage = page => {
+	const onChangePage = (page) => {
 		dispatch(setCurrentPage(page));
 	};
 
@@ -39,7 +40,6 @@ const Home = () => {
 		const category = categoryId > 0 ? `category=${categoryId}` : '';
 		const search = searchValue ? `&search=${searchValue}` : '';
 
-		// вместо try/catch используем extraReducers в асинхронном экшене fetchPizzas где мы обрабатываем ошибку
 		dispatch(fetchPizzas({ sortBy, order, category, search, currentPage }));
 	};
 
@@ -60,7 +60,7 @@ const Home = () => {
 	React.useEffect(() => {
 		if (window.location.search) {
 			const params = qs.parse(window.location.search.substring(1));
-			const sort = sortList.find(obj => obj.sortProperty === params.sortProperty);
+			const sort = sortList.find((obj) => obj.sortProperty === params.sortProperty);
 
 			dispatch(setFilters({ ...params, sort }));
 
@@ -79,7 +79,7 @@ const Home = () => {
 		isSearch.current = false;
 	}, []);
 
-	const pizzas = items.map(obj => <PizzaBlock key={obj.id} {...obj} />);
+	const pizzas = items.map((obj) => <PizzaBlock key={obj.id} {...obj} />);
 
 	const skeletons = [...new Array(10)].map((_, index) => <Skeleton key={index} />);
 

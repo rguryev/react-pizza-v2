@@ -1,0 +1,56 @@
+{
+  "$schema": "https://aka.ms/codetour-schema",
+  "title": "Fetching items from slice and status check",
+  "steps": [
+    {
+      "file": "src/redux/slices/pizzaSlice.js",
+      "description": "## Import createAsyncThunk\r\ncreateSlice и createAsyncThunk - это 80% что будем делать в redux-toolkit",
+      "pattern": "^[^\\S\\n]*import \\{ createAsyncThunk, createSlice \\} from '@reduxjs/toolkit';"
+    },
+    {
+      "file": "src/redux/slices/pizzaSlice.js",
+      "description": "## Why we use fetch from slice? Creating async action by createAsyncThunk.\r\n1. Почему надо переносить логику получения пицц с сервера и сохранение их в стейт в бизнес логику (в слайс): сегодня у нас логика получения пицц в home, а завтра может быть нужно и в другом месте, поэтому выделяем в отдельный файл чтобы не дублировать и использовать в любой части приложения.\r\n2. createAsyncThunk - это экшнкриейтор и возвращает асинхронный экшен, АЭ удобен когда нам надо сделать запрос на сервер + сделать какие-то манипуляции со стейтом в зависимости от статуса.\r\n3. в асинхронном экшене префикс 'pizza/fetchPizzasStatus' = fetchPizzas в extraReducers, а 'pizza/fetchPizzasStatus/pending' = fetchPizzas.pending, это нужно для того, чтобы понимать что он связан со слайсом pizza + объясняем через / что это действие fetchPizzasStatus + редакс прикрутит pending/fulfilled/rejected. Все это нужно для того, чтобы проще дебажить в браузере в расширении redux-toolkit\r\n4. мы вытащили бизнес-логику получения пицц с сервера в отдельный асинхронный экшен и теперь эту логику можем использовать для для разных слайсов и для разных страниц",
+      "pattern": "^[^\\S\\n]*export const fetchPizzas = createAsyncThunk\\('pizza/fetchPizzasStatus', async params => \\{",
+      "selection": {
+        "start": {
+          "line": 26,
+          "character": 2
+        },
+        "end": {
+          "line": 26,
+          "character": 15
+        }
+      }
+    },
+    {
+      "file": "src/redux/slices/pizzaSlice.js",
+      "description": "## Status\r\nСоздаем в стейте статус (loading | success | error) по которому будем определять, отрисовывать компоненты, скелетон или ошибку в home.jsx",
+      "pattern": "^[^\\S\\n]*status: 'loading',"
+    },
+    {
+      "file": "src/redux/slices/pizzaSlice.js",
+      "description": "## extraReducers - fetching status\r\nВ слайсе pizzaSlice используем extraReducers куда передаем имя АЭ fetchPizzas и там обрабатываем ошибку.\r\n1. Во время выполнения fetchPizzas, если идет загрузка (pending) - очисти стейт и поменяй статус\r\n2. если он выполнится успешно (fulfilled) - передай пиццы полученные с сервера в стейт и поставь статус 'success'\r\n3. если с сервера придет ошибка (rejected) - очисти стейт и поменяй статус (который покажет страницу с ошибкой в home.jsx)",
+      "pattern": "^[^\\S\\n]*extraReducers: \\{"
+    },
+    {
+      "file": "src/pages/Home.jsx",
+      "description": "## dispatching async action fetchPizzas\r\n1. В функции getPizzas вместо try/catch (для обработки ошибки) диспатчим асинхронный экшен fetchPizzas в который передаем параметры сортировки, а экшен делает запрос на сервер и сохраняет пиццы в стейт.\r\n2. В слайсе pizzaSlice используем extraReducers куда передаем имя АЭ fetchPizzas и там обрабатываем ошибку.",
+      "pattern": "^[^\\S\\n]*dispatch\\(fetchPizzas\\(\\{ sortBy, order, category, search, currentPage \\}\\)\\);",
+      "selection": {
+        "start": {
+          "line": 43,
+          "character": 12
+        },
+        "end": {
+          "line": 43,
+          "character": 23
+        }
+      }
+    },
+    {
+      "file": "src/pages/Home.jsx",
+      "description": "## Status checking\r\nИз стейта получаем статус и в jsx рендерим либо страницу с ошибкой, либо компоненты/скелетоны в зависимости от статуса",
+      "pattern": "^[^\\S\\n]*const \\{ items, status \\} = useSelector\\(state => state\\.pizza\\);"
+    }
+  ]
+}
