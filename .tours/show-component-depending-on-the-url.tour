@@ -1,0 +1,26 @@
+{
+  "$schema": "https://aka.ms/codetour-schema",
+  "title": "Show component depending on the URL",
+  "steps": [
+    {
+      "file": "src/components/Header.jsx",
+      "description": "## Import and initialization\r\nИмпортируем и инициализируем объект location хука useLocation, этот хук имеет: hash, key, pathname, search, state",
+      "pattern": "^[^\\S\\n]*const location = useLocation\\(\\);",
+      "selection": {
+        "start": {
+          "line": 14,
+          "character": 19
+        },
+        "end": {
+          "line": 14,
+          "character": 30
+        }
+      }
+    },
+    {
+      "file": "src/components/Header.jsx",
+      "description": "## Show or Hide depending on the URL\r\nЕсли путь в url (/cart) сходится со строкой где мы хотим прятать кнопку - скрывай, если не сходится - показывай",
+      "pattern": "^[^\\S\\n]*\\{location\\.pathname !== '/cart' && \\("
+    }
+  ]
+}
