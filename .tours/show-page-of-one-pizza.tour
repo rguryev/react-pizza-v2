@@ -1,0 +1,56 @@
+{
+  "$schema": "https://aka.ms/codetour-schema",
+  "title": "Show page of one pizza",
+  "steps": [
+    {
+      "file": "src/pages/FullPizza.jsx",
+      "description": "## Creating page of pizza\r\n\r\nСоздаем страницу пиццы в отдельном компоненте.",
+      "pattern": "^[^\\S\\n]*const FullPizza = \\(\\) => \\{"
+    },
+    {
+      "file": "src/App.js",
+      "description": "## Creating route in app.js\r\n\r\n1. Пишем роут, если надо сделать параметр динамическим, пишем через \":\".\r\n2. Роут - это дословно: если видем путь 'pizza/:id', то отрисовываем компонент <FullPizza2 />",
+      "pattern": "^[^\\S\\n]*<Route path='pizza/:id' element=\\{<FullPizza2 />\\} />",
+      "selection": {
+        "start": {
+          "line": 19,
+          "character": 38
+        },
+        "end": {
+          "line": 19,
+          "character": 52
+        }
+      }
+    },
+    {
+      "file": "src/pages/FullPizza.jsx",
+      "description": "## Getting id of pizza from url\r\n\r\n1. Чтобы получить id из url - используем хук useParams()\r\n2. Получив id мы сможем сделать запрос на сервер за данными этой пиццы. Это происходит так: мы нажали на пиццу -> id этой пиццы попало в url -> мы берем id из url с помощью хука useParams() -> мы переходим на страницу с пиццой -> useParams заставляет компоненту перерисоваться -> это вызывает useEffect() который получает данные с сервера -> данные распределяются в компоненте.",
+      "pattern": "^[^\\S\\n]*const \\{ id \\} = useParams\\(\\);",
+      "selection": {
+        "start": {
+          "line": 7,
+          "character": 17
+        },
+        "end": {
+          "line": 7,
+          "character": 26
+        }
+      }
+    },
+    {
+      "file": "src/pages/FullPizza.jsx",
+      "description": "## Fetching data of pizza\r\n\r\nВ useEffect() создаем асинхронную функцию, которая делает запрос на сервер и полученные данные мы сетаем в локальный стейт и выполняем ее.\r\n\r\n",
+      "pattern": "^[^\\S\\n]*React\\.useEffect\\(\\(\\) => \\{"
+    },
+    {
+      "file": "src/pages/Home.jsx",
+      "description": "## Wrapping pizzas in Link\r\n\r\nОборачиваем каждую пиццу в линк, который по клику поменяем url на страницу одной конкретной пиццы. Потом useParams заметит что url поменялся и перерисует компонент на нужную страницу.",
+      "pattern": "^[^\\S\\n]*const pizzas = items\\.map\\(\\(obj\\) => \\("
+    },
+    {
+      "file": "src/pages/FullPizza.jsx",
+      "description": "## Using data\r\n\r\nИспользуем эти данные в jsx",
+      "pattern": "^[^\\S\\n]*<img src=\\{pizza\\.imageUrl\\} alt=\\{pizza\\.title\\} />"
+    }
+  ]
+}

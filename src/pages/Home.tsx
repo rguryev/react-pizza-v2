@@ -17,7 +17,7 @@ import Skeleton from '../components/PizzaBlock/Skeleton';
 import Sort, { sortList } from '../components/Sort';
 import { fetchPizzas, selectPizzaData } from '../redux/slices/pizzaSlice';
 
-const Home = () => {
+const Home: React.FC = () => {
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
 	const isSearch = React.useRef(false);
@@ -26,11 +26,11 @@ const Home = () => {
 	const { items, status } = useSelector(selectPizzaData);
 	const { categoryId, sort, currentPage, searchValue } = useSelector(selectFilter);
 
-	const onChangeCategory = React.useCallback((idx) => {
+	const onChangeCategory = (idx: number) => {
 		dispatch(setCategoryId(idx));
-	});
+	};
 
-	const onChangePage = (page) => {
+	const onChangePage = (page: number) => {
 		dispatch(setCurrentPage(page));
 	};
 
@@ -40,7 +40,10 @@ const Home = () => {
 		const category = categoryId > 0 ? `category=${categoryId}` : '';
 		const search = searchValue ? `&search=${searchValue}` : '';
 
-		dispatch(fetchPizzas({ sortBy, order, category, search, currentPage }));
+		dispatch(
+			// @ts-ignore
+			fetchPizzas({ sortBy, order, category, search, currentPage }),
+		);
 	};
 
 	//* 1st useEffect: generating url
@@ -79,7 +82,7 @@ const Home = () => {
 		isSearch.current = false;
 	}, []);
 
-	const pizzas = items.map((obj) => (
+	const pizzas = items.map((obj: any) => (
 		<Link to={`pizza/${obj.id}`} key={obj.id}>
 			<PizzaBlock {...obj} />
 		</Link>

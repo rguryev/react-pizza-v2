@@ -1,7 +1,5 @@
-import React, { Children } from 'react';
 import { Route, Routes } from 'react-router-dom';
 
-import Header from './components/Header';
 import MainLayout from './layouts/MainLayout';
 import Cart from './pages/Cart';
 import FullPizza from './pages/FullPizza';

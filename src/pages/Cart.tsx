@@ -5,12 +5,16 @@ import CartEmpty from '../components/CartEmpty';
 import CartItem from '../components/CartItem';
 import { clearItems, selectCart } from '../redux/slices/cartSlice';
 
-const Cart = () => {
+const Cart: React.FC = () => {
 	const dispatch = useDispatch();
 	const { items, totalPrice } = useSelector(selectCart);
 
+	const totalCount = items.reduce((sum: number, item: any) => sum + item.count, 0);
+
 	const onClickClear = () => {
 		if (window.confirm('Очистить корзину?')) {
+			//TODO : изменить в редаксе на (state, action: PayloadAction<SomeTypeHere>) https://redux.js.org/tutorials/typescript-quick-start#define-slice-state-and-action-types
+			// @ts-ignore
 			dispatch(clearItems());
 		}
 	};
@@ -95,14 +99,14 @@ const Cart = () => {
 					</div>
 				</div>
 				<div className='content__items'>
-					{items.map(item => (
+					{items.map((item: any) => (
 						<CartItem key={item.id} {...item} />
 					))}
 				</div>
 				<div className='cart__bottom'>
 					<div className='cart__bottom-details'>
 						<span>
-							Всего пицц: <b>{items.length} шт.</b>{' '}
+							Всего пицц: <b>{totalCount} шт.</b>{' '}
 						</span>
 						<span>
 							Сумма заказа: <b>{totalPrice} ₽</b>{' '}
