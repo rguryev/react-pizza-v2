@@ -33,8 +33,12 @@ const Sort = () => {
 	// Event Listener on full window
 	React.useEffect(() => {
 		// Step 6: handler click
-		const handleClickOutside = (event: any) => {
-			if (!event.composedPath().includes(sortRef.current)) {
+		const handleClickOutside = (event: MouseEvent) => {
+			const _event = event as MouseEvent & {
+				path: Node[];
+				composedPath: (tar?: HTMLElement) => EventTarget[];
+			};
+			if (sortRef.current && !_event.composedPath().includes(sortRef.current)) {
 				setOpen(false);
 			}
 		};
