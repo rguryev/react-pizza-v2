@@ -1,6 +1,6 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
-import { addItem, minusItem, removeItem } from '../redux/slices/cartSlice';
+import { addItem, CartItem, minusItem, removeItem } from '../redux/slices/cartSlice';
 
 type CartItemProps = {
 	id: string;
@@ -12,11 +12,20 @@ type CartItemProps = {
 	type: string;
 };
 
-const CartItem: React.FC<CartItemProps> = ({ id, title, count, price, imageUrl, size, type }) => {
+const CartItemBlock: React.FC<CartItemProps> = ({
+	id,
+	title,
+	count,
+	price,
+	imageUrl,
+	size,
+	type,
+}) => {
 	const dispatch = useDispatch();
 
 	const onClickPlus = () => {
-		dispatch(addItem({ id }));
+		// когда мы нажимаем на кнопку +, нам нет смысла передавать весь объект, достаточно только id. Мы говорим, что объект {id} ровняется строго как объект типа CartItem (обманываем тс)
+		dispatch(addItem({ id } as CartItem));
 	};
 
 	const onClickMinus = () => {
@@ -107,4 +116,4 @@ const CartItem: React.FC<CartItemProps> = ({ id, title, count, price, imageUrl, 
 	);
 };
 
-export default CartItem;
+export default CartItemBlock;
