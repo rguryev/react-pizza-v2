@@ -2,7 +2,7 @@ import clsx from 'clsx';
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import { addItem, minusItem, removeItem } from '../redux/cart/slice';
-import { CartItem } from '../redux/cart/types';
+import { CartItem as CartItemType } from '../redux/cart/types';
 
 type CartItemProps = {
 	id: string;
@@ -14,7 +14,7 @@ type CartItemProps = {
 	type: string;
 };
 
-const CartItemBlock: React.FC<CartItemProps> = ({
+export const CartItem: React.FC<CartItemProps> = ({
 	id,
 	title,
 	count,
@@ -27,7 +27,7 @@ const CartItemBlock: React.FC<CartItemProps> = ({
 
 	const onClickPlus = () => {
 		// когда мы нажимаем на кнопку +, нам нет смысла передавать весь объект, достаточно только id. Мы говорим, что объект {id} ровняется строго как объект типа CartItem (обманываем тс)
-		dispatch(addItem({ id } as CartItem));
+		dispatch(addItem({ id } as CartItemType));
 	};
 
 	const onClickMinus = () => {
@@ -120,5 +120,3 @@ const CartItemBlock: React.FC<CartItemProps> = ({
 		</div>
 	);
 };
-
-export default CartItemBlock;

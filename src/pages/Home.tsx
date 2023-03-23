@@ -4,12 +4,8 @@ import { Link, useNavigate } from 'react-router-dom';
 
 import { useSelector } from 'react-redux';
 
-import Categories from '../components/Categories';
-import Pagination from '../components/Pagination';
-import PizzaBlock from '../components/PizzaBlock/index';
-import Skeleton from '../components/PizzaBlock/Skeleton';
+import { Categories, Pagination, PizzaBlock, Skeleton, Sort } from '../components';
 
-import SortPopup from '../components/Sort';
 import { selectFilter } from '../redux/filter/selectors';
 import { setCategoryId, setCurrentPage } from '../redux/filter/slice';
 import { fetchPizzas } from '../redux/pizza/asyncActions';
@@ -103,7 +99,7 @@ const Home: React.FC = () => {
 		<div className='container'>
 			<div className='content__top'>
 				<Categories value={categoryId} onChangeCategory={onChangeCategory} />
-				<SortPopup value={sort} />
+				<Sort value={sort} />
 			</div>
 			<h2 className='content__title'>Все пиццы</h2>
 			{status === 'error' ? (
